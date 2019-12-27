@@ -22,11 +22,16 @@ const boardModule = (()=>{
     }
     const newGame= () => {
         _board = []
+        tie = false;
+        winner = '';
         createBoard();
 
     }
     const getBoard = ()=> {
         return _board;
+    }
+    const getTie = ()=> {
+        return tie;
     }
     const validMove = (row, col) => {
         return _board[row][col] == '';
@@ -90,8 +95,7 @@ const boardModule = (()=>{
         return false;
     }
     const isGameOver = () => {
-
-        return (!tie && _winner != '');
+        return tie || _winner != '';
     }
 
     const move = (row, col) => {
@@ -118,7 +122,8 @@ const boardModule = (()=>{
         move,
         getBoard,
         newGame,
-        getWinner
+        getWinner,
+        getTie
     }
 })();
 
@@ -130,17 +135,22 @@ const displayControllerModule = (function() {
             for (let col = 0; col < 3; col++) {
                 let index = row*3+col;
                 let board = boardModule.getBoard();
-                if(board[row][col] != ''){
-                    _cells[index].textContent = board[row][col];
-                }
-
+                _cells[index].textContent = board[row][col];
             }
         }
         let result = document.querySelector('.result');
         if(boardModule.isGameOver()){
-            if (boardModule.getWinner() != '')
-                result.textContent = boardModule.getWinner();
-        } else if(boardModule.tie){ result.textContent = "Tie";}
+            if(boardModule.getTie()) {
+                result.textContent = "Tie";}
+
+            else if(boardModule.getWinner() == 'x'){
+                result.textContent = "Player One wins"
+            } else{
+                result.textContent = "Player Two wins"
+            }
+        }
+
+        document.querySelector('.turn').textContent = `${boardModule.getWhosTurn()} Turn`
     }
 
     return {
@@ -159,6 +169,10 @@ document.querySelectorAll('.cell').forEach((cell) => {
             displayControllerModule.render();
         }
     })
+})
+document.querySelector('.restart').addEventListener('click', () => {
+    boardModule.newGame();
+    displayControllerModule.render();
 })
 
 //Create Module for Board
