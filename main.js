@@ -157,8 +157,6 @@ document.querySelectorAll('.cell').forEach((cell) => {
         if(!boardModule.isGameOver()){
             boardModule.move(row, col);
             displayControllerModule.render();
-        } else {
-
         }
     })
 })
