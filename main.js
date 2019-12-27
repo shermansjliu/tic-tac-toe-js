@@ -54,11 +54,12 @@ const boardModule = (()=>{
         let win = true;
         //checkRow
         for(let i = 0; i < 3; i ++) {
-            if (_board[i][col] != playerSymbol) {
+            if (_board[row][i] != playerSymbol) {
                 win = false;
                 break;
             }
         }
+        if (win) {return true;}
 
         win = true;
         for (let i = 0; i < 3; i++){
@@ -66,8 +67,6 @@ const boardModule = (()=>{
                 win = false
                 break;}
         }
-
-
         if (win) {return true};
 
         win = true;
